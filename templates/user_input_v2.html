@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home</title>
+        <style type='text/css'>
+        #checkbox input[type="checkbox"] {display: none; }
+        #checkbox input:checked + .button {background: #5e7380; color: #fff;}
+        #checkbox .button {display: inline-block; margin: 0 5px 10px 0; padding: 5px 10px; background: #f7f7f7; color: #333; cursor: pointer; }
+        #checkbox .button:hover {background: #bbb; color: #fff; }
+        #checkbox .round {border-radius: 5px; }
+        
+        #submit-btn{
+                width: 100px;
+                height: 40px;
+                display: block;
+                text-align: center;
+                cursor: pointer;
+                line-height: 40px;
+                color: #fff;
+                background-color: #000;
+                transition: all .3s linear;
+            }
+        </style>
+</head>
+<body>
+        
+        <h1>My Website Text</h1>
+        <div id="checkbox">
+        <p>您的理想居住城市:(目前僅開放台北市)</p>
+        <label><input type="checkbox" id="choice1" value="台北市" /><span class="round button">台北市</span></label>
+        <label><input type="checkbox" id="choice2" value="新北市" /><span class="round button">新北市</span></label>
+        </div>
+
+        <div id="Area">
+        <label for="area_select">選擇您想查詢的行政區:</label>
+        <select id="area_select">
+            <option value="0" disabled>行政區</option>
+            <option value="1" selected>中正區</option>
+            <option value="2">大同區</option>
+            <option value="3">中山區</option>
+            <option value="4">松山區</option>
+            <option value="5">大安區</option>
+            <option value="6">萬華區</option>
+            <option value="7">信義區</option>
+            <option value="8">士林區</option>
+            <option value="9">北投區</option>
+            <option value="10">內湖區</option>
+            <option value="11">南港區</option>
+            <option value="12">文山區</option>
+        </select>
+        </div>
+
+        <div id="group">
+        <p>選擇您的身份族群:</p>
+        <form>
+        <input type="radio" id="TA1" name="group" value="上班族">
+        <label for="TA1">上班族</label><br>
+        <input type="radio" id="TA2" name="group" value="小家庭">
+        <label for="TA2">小家庭</label><br>
+        <input type="radio" id="TA3" name="group" value="銀髮族">
+        <label for="TA3">銀髮族</label>
+        </form>
+        </div>
+
+        <br />
+        <div class="button" id="submit-btn" onclick="submit()">送出</div>
+        <br />
+</body>
+
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script>
+
+       function submit(){
+            var string = '';
+            var string2 = '';
+            var string3 = '';
+            for (var i=1;i<3;i++){
+                if (document.getElementById("choice"+i).checked){
+                     string = string + "_" + document.getElementById("choice" + i).value
+                }
+                //window.alert(string)
+            }
+
+            
+            // if(document.getElementById("area_select").checked){
+            var e = document.getElementById("area_select");
+            var a = e.options[e.selectedIndex].text;
+            // var b = e.options[e.selectedIndex].value;
+            string2 = string2 + "_" + a 
+            //window.alert(string)
+            // }
+            
+            for (var i=1;i<4;i++){
+                if (document.getElementById("TA"+i).checked){
+                     string3 = string3 + "_" + document.getElementById("TA" + i).value
+                }
+                //window.alert(string)
+            }
+
+            // sendMessages call
+            liff.init({
+                　liffId: '1656675798-v2b2w9kn'
+                }) .then(() => {
+                    window.alert('系統將自動回傳您的選項');
+                    liff.sendMessages([{
+                            'type': 'text',
+                            'text': '你選了城市：' + string
+                        },
+                        {
+                            'type': 'text',
+                            'text': '你選了地區：' + string2
+                        },
+                        {
+                            'type': 'text',
+                            'text': '你選了身份：' + string3
+                        }                    
+                    ])
+                        .then(()=>{
+                             liff.closeWindow();
+                        })
+                }).catch((err) => {
+                //　window.alert('初始化失敗')
+                });
+
+        }
+
+    </script>
+</html>
